@@ -5,3 +5,8 @@ before_install:
   - docker build -t mahakagarwal248/server -f DockerFile.dev .
 script:
   - docker run mahakagarwal248/server npm test -- --coverage
+after_success:
+  #build production grade dockerfile
+  - docker build -t mahakagarwal248/server .
+  - echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_ID" --password-stdin
+  - docker push mahakagarwal248/server
