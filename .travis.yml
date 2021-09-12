@@ -6,6 +6,8 @@ before_install:
 script:
   - docker run mahakagarwal248/server npm test -- --coverage
 after_success:
+  #decrypt env variables
+  - openssl enc -aes256 -d -in .enc cipher -out .env -k $SECRET_KEY
   #build production grade dockerfile
   - docker build -t mahakagarwal248/server .
   - echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_ID" --password-stdin
