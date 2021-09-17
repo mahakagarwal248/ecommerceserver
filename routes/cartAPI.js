@@ -28,7 +28,7 @@ router.get("/", auth, async (req, res)=>{
         }
         res.send({result});
     } catch (err) {
-        res.send(500);
+        res.sendStatus(500);
     }
 });
 
