@@ -19,7 +19,7 @@ delete_version() {
         if [[ ${array[$i]} == *"0.00"* ]]; then
             local version=${array[$i - 1]}
             local command="gcloud -q app versions delete $version"
-            eval $
+            eval $command
         fi
     done
 }
