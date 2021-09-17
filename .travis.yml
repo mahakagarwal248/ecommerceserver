@@ -7,7 +7,7 @@ script:
   - docker run mahakagarwal248/server npm test -- --coverage
 after_success:
   #decrypt env variables
-  - openssl enc -aes256 -d -in .enc cipher -out .env -k $SECRET_KEY
+  - openssl enc -aes256 -d -in .enc -out .env -k $SECRET_KEY
   #decrypt service account
   - openssl enc -aes256 -d -in serviceAccount.json.enc -out serviceAccount.json -k $SERVICE_KEY
   #install GCP sdk , delete old versions
