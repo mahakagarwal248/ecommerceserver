@@ -2,7 +2,7 @@ sudo: required
 services:
   - docker
 before_install:
-  - docker build -t mahakagarwal248/server -f DockerFile.dev .
+  - docker build -t mahakagarwal248/server -f Dockerfile.dev .
 script:
   - docker run mahakagarwal248/server npm test -- --coverage
 after_success:
@@ -11,9 +11,9 @@ after_success:
   #decrypt service account
   - openssl enc -aes256 -d -in serviceAccount.json.enc -out serviceAccount.json -k $SERVICE_KEY
   #install GCP sdk , delete old versions
-  - if [ ! -d "%HOMEPATH%/google-cloud-sdk/bin" ]; then rm -rf %HOMEPATH%/google-cloud-sdk; export CLOUDSDK_CORE_DISABLE_PROMPTS=1; curl https://sdk.cloud.google.com | bash; fi
+  - if [ ! -d "$HOME/google-cloud-sdk/bin" ]; then rm -rf $HOME/google-cloud-sdk; export CLOUDSDK_CORE_DISABLE_PROMPTS=1; curl https://sdk.cloud.google.com | bash; fi
 
-  - source /users/mahak/travis/google-cloud-sdk/path.bash.inc
+  - source /home/travis/google-cloud-sdk/path.bash.inc
   # get google authorization
   - gcloud auth activate-service-account --key-file serviceAccount.json
   #set up project
