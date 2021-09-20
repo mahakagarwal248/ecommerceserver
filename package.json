@@ -4,8 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "run-test": "nyc mocha test/**/**/*.test.js --exit",
-    "test": "nyc --reporter=lcov npm run run-test",
+    "run-test": "nyc mocha --exit test/**/**/*.test.js",
+    "test": "nyc --reporter=lcov --all npm run run-test",
     "view-coverage": "cd coverage/lcov-report/ && lite-server && ../../",
     "start": "node server.js",
     "server": "node server.js"
@@ -38,8 +38,10 @@
     "nyc": "^15.1.0"
   },
   "nyc": {
+    "all": true,
     "include": [
       "**/server/**/*.js"
-    ]
+    ],
+    "exclude": []
   }
 }
