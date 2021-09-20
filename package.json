@@ -38,13 +38,8 @@
     "nyc": "^15.1.0"
   },
   "nyc": {
-    "all": true,
     "include": [
       "**/server/**/*.js"
-    ],
-    "reporter": [
-      "lcov",
-      "text"
     ]
   }
 }
