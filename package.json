@@ -6,7 +6,7 @@
   "scripts": {
     "run-test": "nyc mocha --exit test/**/**/*.test.js",
     "test": "nyc --reporter=lcov --all npm run run-test",
-    "view-coverage": "cd coverage/lcov-report/ && lite-server && ../../",
+    "view-coverage": "cd coverage/lcov-report/",
     "start": "node server.js",
     "server": "node server.js"
   },

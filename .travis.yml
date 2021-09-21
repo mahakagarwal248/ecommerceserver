@@ -6,7 +6,6 @@ before_install:
 before_script:
   - chmod 0555 ./node_modules/.bin/mocha
   - chmod 0555 ./node_modules/.bin/nyc
-  - chmod 0777 ./node_modules/nyc
 script:
   - docker run mahakagarwal248/server npm test -- --coverage
 after_success:
