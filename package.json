@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "run-test": "mocha --exit test/**/**/*.test.js",
+    "run-test": "nyc mocha --exit test/**/**/*.test.js",
     "test": "nyc --reporter=lcov --all npm run run-test",
     "view-coverage": "cd coverage/lcov-report/ && lite-server && ../../",
     "start": "node server.js",
