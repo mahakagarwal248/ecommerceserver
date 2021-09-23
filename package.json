@@ -5,9 +5,10 @@
   "main": "server.js",
   "scripts": {
     "run-test": "nyc mocha --exit test/**/**/*.test.js",
-    "test": "nyc --reporter=lcov --reporter=text-summary --all npm run run-test",
-    "view-coverage": "cd coverage/lcov-report/",
+    "test": "nyc --reporter=lcov npm run run-test",
+    "view-coverage": "cd coverage/lcov-report/ && lite-server && ../../",
     "start": "node server.js",
+    "script": "node server.js",
     "server": "node server.js"
   },
   "repository": {
@@ -30,7 +31,8 @@
     "lodash": "^4.17.21",
     "mongoose": "^6.0.5",
     "morgan": "^1.10.0",
-    "stripe": "^8.174.0"
+    "stripe": "^8.174.0",
+    "util.promisify": "^1.1.1"
   },
   "devDependencies": {
     "assert": "^1.5.0",
@@ -38,10 +40,8 @@
     "nyc": "^15.1.0"
   },
   "nyc": {
-    "all": true,
     "include": [
       "**/server/**/*.js"
-    ],
-    "exclude": []
+    ]
   }
 }
