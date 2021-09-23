@@ -4,7 +4,7 @@ services:
 before_install:
   - docker build -t mahakagarwal248/server -f Dockerfile.dev .
 before_script:
-  - chmod +x mocha
+  - chmod +x ./node_modules/.bin/mocha
 script:
   - docker run mahakagarwal248/server npm test -- --coverage
 after_success:
