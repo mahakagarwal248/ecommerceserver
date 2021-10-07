@@ -2,7 +2,22 @@ const express = require("express");
 const router = express.Router();
 const auth = require("../middleware/authorization");
 const {check, validationResult} = require("express-validator");
+const {Storage} = require("@google-cloud/storage");
+let multer = require("multer");
 const Product = require("../models/products");
+const memoryStorage = multer.memoryStorage;
+const storage = new Storage({
+    projectId:process.env.PROJECT_ID,
+    keyFilename:process.env.GCLOUD_KEY_FILE,
+});
+const bucket = storage.bucket(process.env.GCLOUD_STORAGE_BUCKET);
+
+multer = multer({
+    storage: memoryStorage(),
+    limits: {
+        fileSize: 2000 * 1024 * 1024,
+    }
+});
 
 router.post("/", 
  [auth, 
@@ -67,6 +82,49 @@ router.get("/instructors/:id", auth, async (req,res)=>{
     try {
         const products = await Product.find({ userId: req.params.id });
         res.json(products);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Server error");
+    }
+});
+
+router.post("/upload/thumbnail", auth,multer.single("file"), async (req,res)=>{
+    try {
+        const {id} = req.user;
+        const {productId, multiple} = req.query;
+
+        if(!req.file){
+            res.status(400).send("No File Uploaded");
+            return;
+        }
+        const blob = bucket.file(`${id}/${productId}/${req.file.originalname}`);
+        const blobStream = blob.createWriteStream();
+        blobStream.on('error', (err)=>{
+            console.log(err);
+        });
+
+        blobStream.on("finish",async ()=>{
+            console.log(`Successfully uploaded ${req.file.originalname}`);
+            await blob.makePublic();
+            if(multiple){
+                await Product.findOneAndUpdate(
+                    {_id:productId},
+                    {$push:{images:blob.metadata.mediaLink}},
+                    {new: true, upsert: true}
+                )
+            }else{
+                await Product.findByIdAndUpdate(
+                    {_id:productId},
+                    {$set: {thumbnail: blob.metadata.mediaLink}},
+                    {new: true}
+                );
+            }
+            
+            res
+                .status(200)
+                .send({msg: `Successfully uploaded ${req.file.originalname}`});
+        });
+        blobStream.end(req.file.buffer);
     } catch (error) {
         console.error(error.message);
         res.status(500).send("Server error");
