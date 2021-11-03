@@ -78,7 +78,7 @@ router.get("/:id", async (req, res) =>{
     }
 });
 
-router.get("/instructors/:id", auth, async (req,res)=>{
+router.get("/instructors/:id",  async (req,res)=>{
     try {
         const products = await Product.find({ userId: req.params.id });
         res.json(products);
